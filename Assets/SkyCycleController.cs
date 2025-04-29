@@ -9,10 +9,10 @@ public class SkyboxCycle : MonoBehaviour
 
     private float timer = 0f;
 
-    private float dayLength = 7f * 60f;    // 7 minutes in seconds
-    private float sunsetLength = 3f * 60f; // 3 minutes in seconds
-    private float nightLength = 12f * 60f; // 12 minutes in seconds
-    private float sunriseLength = 3f * 60f; // 3 minutes in seconds
+    private float dayLength = 7f * 60f;    
+    private float sunsetLength = 3f * 60f; 
+    private float nightLength = 12f * 60f; 
+    private float sunriseLength = 3f * 60f; 
 
     private float fullDayLength;
 

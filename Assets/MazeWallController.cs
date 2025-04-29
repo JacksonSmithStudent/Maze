@@ -11,8 +11,8 @@ public class MazeWallController : MonoBehaviour
     public int wallsToTurnOn = 10;
     public int wallsToTurnOff = 15;
     private float timer = 0f;
-    public float nightCycleDuration = 10f * 60f; // 10 minutes cycle
-    private bool canChangeWalls = true; // Flag to track if we can change walls
+    public float nightCycleDuration = 10f * 60f; 
+    private bool canChangeWalls = true; 
 
     void Start()
     {
@@ -26,21 +26,19 @@ public class MazeWallController : MonoBehaviour
 
     void Update()
     {
-        // Increment the timer with delta time
+      
         timer += Time.deltaTime;
 
-        // Check if 10 minutes have passed and if it's allowed to change walls
         if (timer >= nightCycleDuration && canChangeWalls)
         {
             StartNightCycle();
-            canChangeWalls = false; // Prevent changes until the next cycle
-            timer = 0f; // Reset the timer for the next cycle
+            canChangeWalls = false; 
+            timer = 0f; 
         }
     }
 
     void ToggleWalls()
     {
-        // Turn off a number of active walls
         for (int i = 0; i < wallsToTurnOff; i++)
         {
             if (activeWalls.Count == 0) break;
@@ -54,7 +52,6 @@ public class MazeWallController : MonoBehaviour
             inactiveWalls.Add(wall);
         }
 
-        // Turn on a number of inactive walls
         for (int i = 0; i < wallsToTurnOn; i++)
         {
             if (inactiveWalls.Count == 0) break;
