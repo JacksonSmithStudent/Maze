@@ -200,6 +200,8 @@ public class FirstPersonController : MonoBehaviour
 
     float camRotation;
 
+
+
     private void Update()
     {
         #region Camera
@@ -268,13 +270,28 @@ public class FirstPersonController : MonoBehaviour
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, zoomStepTime * Time.deltaTime);
             }
         }
+        // Interaction
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f)); // Center of screen
+            if (Physics.Raycast(ray, out RaycastHit hit, 3f)) // 3f = interaction range
+            {
+                IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+                if (interactable != null)
+                {
+                    interactable.Interact();
+                }
+            }
+        }
+
+
 
         #endregion
         #endregion
 
         #region Sprint
 
-        if(enableSprint)
+        if (enableSprint)
         {
             if(isSprinting)
             {
@@ -440,6 +457,8 @@ public class FirstPersonController : MonoBehaviour
 
         #endregion
     }
+
+
 
     // Sets isGrounded based on a raycast sent straigth down from the player object
     private void CheckGround()

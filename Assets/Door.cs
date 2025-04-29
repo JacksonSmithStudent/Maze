@@ -11,33 +11,44 @@ public class DoorController : MonoBehaviour
 
     private bool isOpen = false;
     private float timer = 0f;
-    private float cycleTime = 25f * 60f;
-    private float closeTime = 10f * 60f;
-    private float openTime = 15f * 60f;
+
+    // Time thresholds in seconds
+    private float openTime = 10f * 60f;      // 10 minutes
+    private float closeTime = 25f * 60f;     // 25 minutes
+    private float cycleTime = 25f * 60f;     // Full cycle (25 minutes)
 
     void Start()
     {
         timer = 0f;
+        isOpen = true;
+
         if (!useAnimation && door != null)
+        {
             door.position = openPosition;
+        }
+        else if (useAnimation && doorAnimator != null)
+        {
+            doorAnimator.SetBool("isOpen", true);
+        }
     }
 
     void Update()
     {
         timer += Time.deltaTime;
 
-        if (!isOpen && timer >= 0f && timer < openTime)
+        if (timer < openTime)
         {
-            OpenDoor();
+            OpenDoor(); // From 0 to 10 minutes
         }
-        else if (isOpen && timer >= openTime && timer < cycleTime)
+        else if (timer >= openTime && timer < closeTime)
         {
-            CloseDoor();
+            CloseDoor(); // From 10 to 25 minutes
         }
 
         if (timer >= cycleTime)
         {
             timer = 0f;
+            OpenDoor(); // Reopen at the start of the next cycle
         }
 
         if (!useAnimation && door != null)
@@ -53,7 +64,9 @@ public class DoorController : MonoBehaviour
         {
             isOpen = true;
             if (useAnimation && doorAnimator != null)
+            {
                 doorAnimator.SetBool("isOpen", true);
+            }
         }
     }
 
@@ -63,7 +76,9 @@ public class DoorController : MonoBehaviour
         {
             isOpen = false;
             if (useAnimation && doorAnimator != null)
+            {
                 doorAnimator.SetBool("isOpen", false);
+            }
         }
     }
 }
