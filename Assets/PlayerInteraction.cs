@@ -3,11 +3,9 @@ using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public float interactDistance = 3f; // Distance at which the player can interact with objects
-    public KeyCode interactKey = KeyCode.E; // Key to interact with objects
-    public Text interactText; // UI Text to show interaction prompt (assign in inspector)
-
-    public PlayerStatus playerStatus; // Assign in inspector or found via tag
+    public float interactDistance = 3f;
+    public KeyCode interactKey = KeyCode.E;
+    public Text interactText;
 
     private Camera playerCamera;
 
@@ -15,23 +13,9 @@ public class PlayerInteraction : MonoBehaviour
     {
         playerCamera = Camera.main;
 
-        // If not assigned in inspector, try to find it by tag
-        if (playerStatus == null)
-        {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
-            {
-                playerStatus = player.GetComponent<PlayerStatus>();
-            }
-            else
-            {
-                Debug.LogError("Player GameObject with tag 'Player' not found!");
-            }
-        }
-
         if (interactText != null)
         {
-            interactText.text = ""; // Make sure it's empty at the start
+            interactText.text = "";
         }
         else
         {
@@ -59,9 +43,9 @@ public class PlayerInteraction : MonoBehaviour
                     interactText.text = $"Press '{interactKey}' to pick up {interactableItem.itemName}";
                 }
 
-                if (Input.GetKeyDown(interactKey) && playerStatus != null)
+                if (Input.GetKeyDown(interactKey))
                 {
-                    interactableItem.Interact(playerStatus);
+                    interactableItem.Interact(); // No need for 'playerStatus' argument anymore
                 }
             }
         }
@@ -69,7 +53,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (interactText != null)
             {
-                interactText.text = ""; // Hide prompt
+                interactText.text = "";
             }
         }
     }
