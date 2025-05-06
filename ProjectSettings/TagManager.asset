@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Wall
   - Ground
+  - Grass
+  - Concrete
   layers:
   - Default
   - TransparentFX
