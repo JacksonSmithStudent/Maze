@@ -29,11 +29,16 @@ public class EnemyPathfinding : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
+        bool playerOnNavMesh = NavMesh.SamplePosition(player.position, out _, 1.0f, NavMesh.AllAreas);
+
         if (isChasingPlayer)
         {
-            agent.SetDestination(player.position);
+            if (playerOnNavMesh)
+            {
+                agent.SetDestination(player.position);
+            }
 
-            if (distanceToPlayer > chaseRange)
+            if (distanceToPlayer > chaseRange || !playerOnNavMesh)
             {
                 isChasingPlayer = false;
                 SetNewPatrolPoint();
@@ -46,12 +51,13 @@ public class EnemyPathfinding : MonoBehaviour
                 SetNewPatrolPoint();
             }
 
-            if (distanceToPlayer <= chaseRange)
+            if (distanceToPlayer <= chaseRange && playerOnNavMesh)
             {
                 isChasingPlayer = true;
             }
         }
     }
+
 
     void SetNewPatrolPoint()
     {
