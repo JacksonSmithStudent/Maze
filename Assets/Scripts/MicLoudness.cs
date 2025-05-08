@@ -36,8 +36,7 @@ public class MicLoudnessUI : MonoBehaviour
         float volume = GetMicVolume();
         volumeSlider.value = Mathf.Clamp01(volume * 10f); // Scale for visibility
 
-        // Optional Debug
-        Debug.Log("Mic Volume: " + volume);
+       
     }
 
     float GetMicVolume()
