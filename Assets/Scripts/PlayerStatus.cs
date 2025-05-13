@@ -1,5 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerStatus : MonoBehaviour
 {
@@ -46,41 +47,42 @@ public class PlayerStatus : MonoBehaviour
 
     void Update()
     {
-       
         float thirstDepletionRate = movementScript != null && movementScript.isSprinting ? sprintThirstDepletionRate : normalThirstDepletionRate;
         thirst -= Time.deltaTime * thirstDepletionRate;
 
-      
         hunger -= Time.deltaTime * 0.01f;
 
-        
+
+        if (hunger <= 0f || thirst <= 0f)
+        {
+            SceneManager.LoadScene("Lose");
+            return;
+        }
+
         if (hunger < 45f)
         {
             exhaustion += Time.deltaTime * exhaustionIncreaseRate;
             exhaustion = Mathf.Clamp(exhaustion, 0f, maxExhaustion);
 
-           
-            staminaDrain = 20f + exhaustion * 30f; 
-            staminaRegen = 15f - exhaustion * 10f; 
+            staminaDrain = 20f + exhaustion * 30f;
+            staminaRegen = 15f - exhaustion * 10f;
         }
         else
         {
-            
             exhaustion = 0f;
             staminaDrain = 20f;
             staminaRegen = 15f;
         }
 
-        
         ApplyVisionBlur();
 
-        
         hunger = Mathf.Clamp(hunger, 0f, maxHunger);
         thirst = Mathf.Clamp(thirst, 0f, maxThirst);
         exhaustion = Mathf.Clamp(exhaustion, 0f, maxExhaustion);
 
         UpdateUI();
     }
+
 
     public void ReplenishHunger(float amount)
     {

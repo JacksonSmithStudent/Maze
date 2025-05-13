@@ -12,12 +12,20 @@ public class InteractableItem : MonoBehaviour
     private PlayerStatus playerStatus;
 
     private bool isAvailable = true;
-    private float respawnTime = 5f; // Food respawn time
+    private float respawnTime = 5f;
     private float timeSinceLastInteraction = 0f;
+
+    private Renderer[] renderers;
+    private Collider[] colliders;
 
     void Start()
     {
         playerStatus = FindObjectOfType<PlayerStatus>();
+
+        
+        renderers = GetComponentsInChildren<Renderer>();
+        colliders = GetComponentsInChildren<Collider>();
+
         if (playerStatus == null)
         {
             Debug.LogError("PlayerStatus not found in the scene.");
@@ -33,6 +41,7 @@ public class InteractableItem : MonoBehaviour
             {
                 isAvailable = true;
                 timeSinceLastInteraction = 0f;
+                SetItemVisible(true);
                 Debug.Log($"{itemName} has respawned.");
             }
         }
@@ -53,8 +62,18 @@ public class InteractableItem : MonoBehaviour
 
             isAvailable = false;
             timeSinceLastInteraction = 0f;
+            SetItemVisible(false);
 
             Debug.Log($"{itemName} picked up. Replenishing {itemType}");
         }
+    }
+
+    private void SetItemVisible(bool visible)
+    {
+        foreach (Renderer r in renderers)
+            r.enabled = visible;
+
+        foreach (Collider c in colliders)
+            c.enabled = visible;
     }
 }
